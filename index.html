@@ -21,11 +21,11 @@
           "serviceableId": values[1].candidates[0].id,
           "referenceId1": Math.floor(Math.random() * 10000)
         }
-        console.log(values);
-        
+        alert(JSON.stringify(values));
+
         return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
       }).then(function(values) {
-        //values[0].completed(values[1].referenceNumber);
+        values[0].completed(values[1].referenceNumber);
       });
     }
   </script>
