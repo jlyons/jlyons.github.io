@@ -21,7 +21,7 @@
           "serviceableId": values[1].candidates[0].id,
           "referenceId1": Math.floor(Math.random() * 10000)
         }
-        console.log(values);
+        console.log("My Values",JSON.stringify(values));
 
         return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
       }).then(function(values) {
