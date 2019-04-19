@@ -10,7 +10,7 @@
   </body>
   <script>
     function createSr() {
-      var gwClient = GW.createClient("truepic", "tpvision", jwtToken);
+      var gwClient = GW.createClient("truepic", "tpvision");
       gwClient.getClient().then(function(client) {
         return Promise.all([client, client.getContext()]);
       }).then(function(values) {
