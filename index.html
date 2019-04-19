@@ -1,1 +1,30 @@
-Hello World!
+<!DOCTYPE html>
+<html>
+  <!-- This example HTML file is loaded by the Sample Addon to show simple SR creation. -->
+  <head>
+    <script src="https://s3-us-west-2.amazonaws.com/dc-sampleaddon-ui/gwsdk-1.0.9.js"></script>
+  </head>
+  <body>
+    <h3>Sample App Landing</h3>
+    <button onclick="createSr()">Hello World!</button>
+  </body>
+  <script>
+    function createSr() {
+      var gwClient = GW.createClient("truepic", "tpvision");
+      gwClient.getClient().then(function(client) {
+        return Promise.all([client, client.getContext()]);
+      }).then(function(values) {
+        //This is where you would use the Context to prefill and eventually create a service on your side
+        //We will just create a dummy SR
+        var serviceRequest = {
+          "referenceNumber": Math.floor(Math.random() * 10000),
+          "serviceableId": values[1].candidates[0].id,
+          "referenceId1": Math.floor(Math.random() * 10000)
+        }
+        return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
+      }).then(function(values) {
+        values[0].completed(values[1].referenceNumber);
+      });
+    }
+  </script>
+</html>
