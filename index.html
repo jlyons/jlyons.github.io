@@ -29,5 +29,19 @@
         values[0].completed(values[1].referenceNumber);
       });
     }
+
+    function prefill() {
+      console.log("prefill");
+
+      var gwClient = GW.createClient("truepic", "tpvision");
+      gwClient.getClient().then(function(client) {
+        return Promise.all([client, client.getContext()]);
+      })..then(function(values) {
+        return values[0].httpRequest("GET", "/prefill/serviceable" + values[1].candidates[0].id);
+      }).then(function(response)) {
+        console.log("prefill");
+        //Use response to prefill fields.
+      });
+    }
   </script>
 </html>
