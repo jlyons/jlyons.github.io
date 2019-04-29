@@ -8,7 +8,7 @@
     <h3>Request Inspection Photos</h3>
     Inspection intake form w/ applicable fields prepoplulate (and hidden).<br/><br/>Customize message, lists, etc.<br/><br/>
     <button onclick="createSr()">Start Inspection</button>
-    <button onclick="createPrefill()">Prefill 13</button>
+    <button onclick="createPrefill()">Prefill 14</button>
   </body>
   <script>
     function createSr() {
@@ -44,9 +44,11 @@
         //return values[0].httpRequest("GET", "https://cors-anywhere.herokuapp.com/https://truepic-tpvision-test.sandbox.devconnect.io/cc/devconnect/truepic/tpvision/prefill/serviceable/" + values[1].candidates[0].id);
 
       }).then(function(response) {
-        console.log(response.json());
         console.log("prefill");
+        return response.json();
         //Use response to prefill fields.
+      }).then(function(resp) {
+        console.log(resp);
       });
     }
   </script>
