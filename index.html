@@ -10,6 +10,7 @@
     <button onclick="createSr()">Start Inspection</button>
     <button onclick="createPrefill()">Prefill 14</button>
     <button onclick="createPrefill2()">Prefill2 1</button>
+    <div id="console"></div>
   </body>
   <script>
     function createSr() {
@@ -71,5 +72,13 @@
         console.log(resp);
       });
     }
+
+
+    var gwClient = GW.createClient("truepic", "tpvision");
+    gwClient.getClient().then(function(client) {
+      return Promise.all([client, client.getContext()]);
+    }).then(function(values) {
+      document.getElementById("console").innerHTML = JSON.stringify(values);
+    })
   </script>
 </html>
