@@ -9,6 +9,7 @@
     Inspection intake form w/ applicable fields prepoplulate (and hidden).<br/><br/>Customize message, lists, etc.<br/><br/>
     <button onclick="createSr()">Start Inspection</button>
     <button onclick="createPrefill()">Prefill 14</button>
+    <button onclick="createPrefill2()">Prefill2 1</button>
   </body>
   <script>
     function createSr() {
@@ -45,6 +46,25 @@
 
       }).then(function(response) {
         console.log("prefill");
+        return response.json();
+        //Use response to prefill fields.
+      }).then(function(resp) {
+        console.log(resp);
+      });
+    }
+
+    function createPrefill2() {
+      console.log("prefill2");
+
+      var gwClient = GW.createClient("truepic", "tpvision");
+      gwClient.getClient().then(function(client) {
+        return Promise.all([client, client.getContext()]);
+      }).then(function(values) {
+        console.log(values);
+        return values[0].httpRequest("GET", "/prefill/serviceable/" + values[1].candidates[0].id);
+
+      }).then(function(response) {
+        console.log("prefill2", response);
         return response.json();
         //Use response to prefill fields.
       }).then(function(resp) {
