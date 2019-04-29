@@ -3,6 +3,9 @@
   <!-- This example HTML file is loaded by the Sample Addon to show simple SR creation. -->
   <head>
     <script src="https://s3-us-west-2.amazonaws.com/dc-sampleaddon-ui/gwsdk-1.0.9.js"></script>
+    <style>
+    body {font-family: Arial, Helvetica, sans-serif;}
+    </style>
   </head>
   <body>
     <h3>Request Inspection Photos</h3>
@@ -10,7 +13,7 @@
     <button onclick="createSr()">Start Inspection</button>
     <button onclick="createPrefill()">Prefill 14</button>
     <button onclick="createPrefill2()">Prefill2 1</button>
-    <div id="console"></div>
+    <br/><br/><div id="console"></div>
   </body>
   <script>
     function createSr() {
