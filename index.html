@@ -8,7 +8,7 @@
     <h3>Request Inspection Photos</h3>
     Inspection intake form w/ applicable fields prepoplulate (and hidden).<br/><br/>Customize message, lists, etc.<br/><br/>
     <button onclick="createSr()">Start Inspection</button>
-    <button onclick="prefill()">Prefill</button>
+    <button onclick="prefill()">Prefill 2</button>
   </body>
   <script>
     function createSr() {
@@ -37,7 +37,7 @@
       var gwClient = GW.createClient("truepic", "tpvision");
       gwClient.getClient().then(function(client) {
         return Promise.all([client, client.getContext()]);
-      })..then(function(values) {
+      }).then(function(values) {
         return values[0].httpRequest("GET", "/prefill/serviceable" + values[1].candidates[0].id);
       }).then(function(response)) {
         console.log("prefill");
