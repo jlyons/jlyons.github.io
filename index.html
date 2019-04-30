@@ -4,34 +4,49 @@
   <head>
     <script src="https://s3-us-west-2.amazonaws.com/dc-sampleaddon-ui/gwsdk-1.0.9.js"></script>
     <style>
-    body {font-family: Arial, Helvetica, sans-serif;}
-    #id {padding: 20px; background-color: #efefef; font-family: monospace;}
+    body {font-family: Arial, Helvetica, sans-serif;color:#202529;}
+    .shell {margin:20px;max-width:600px;}
+    .container1 {padding:20px;background-color:#dedede;}
+    .container1 select {height:25px;}
+    .container2 {padding:20px;background-color:#dae1e7;margin-top:40px;}
+    #console {padding: 20px; background-color: #efefef; font-family: monospace;}
+    .label {float:left;width:150px;height:20px;padding-top:5px;}
+    button {border-radius: .75rem;background-color: #0075ff;height:48px;padding:0 2.5rem;color:#fff;font-size:.75rem;text-transform:uppercase}
+    input[type='text'] {height:20px;width:300px;}
+    input[type='checkbox'] {height:20px;}
     </style>
   </head>
   <body>
-    <h3>v1. Request Inspection Photos</h3>
-    <h4>Select Serviceable</h4>
-    <select id="serviceableId" onchange="return selectServicable(this.value)">
-      <option value=""></option>
-    </select>
-    <br/>
-    <div style="display:none;" id="intake-form">
-      Inspection intake form w/ applicable fields prepoplulate (and hidden).<br/><br/>Customize message, lists, etc.<br/><br/>
-      First Name:<br/>
-      <input type="text" id="firstname" value="" /><br/><br/>
-      Last Name:<br/>
-      <input type="text" id="lastname" value="" /><br/><br/>
-      Phone Number:<br/>
-      <input type="text" id="phone" value="" /><br/><br/>
-      Address:<br/>
-      <input type="text" id="address" value="" /><br/><br/>
+    <div class="shell">
+      <h3>Request New Inspection Photos</h3>
+      <p>Confirm customer details and then click Send Text to request photos.</p>
+      <div class="container1">
+        <div class="label" style="width:100px;">Related To</div>
+        <div>
+        <select id="serviceableId" style="width:460px;" onchange="return selectServicable(this.value)">
+          <!-- <option value="">2003 BMW 355i (2GDH967 / California)</option> -->
+        </select>
+        </div>
+      </div>
 
-      <button onclick="createSr()">Start Inspection</button>
+      <!-- Change to display:none/block; -->
+      <div class="container2" style="display:none;" id="intake-form">
+        <div class="label">Full name:</div>
+        <input type="text" id="fullname" value="" /><br/><br/>
+        <div class="label">Phone Number:</div>
+        <input type="text" id="phone" value="" /><br/><br/>
+        <div class="label">Address:</div>
+        <input type="text" id="address" value="" /><br/><br/>
+        <div class="label">Customer ID:</div>
+        <input type="text" id="address" value="" /><br/><br/>
+        <div class="label">Include Photo List:</div>
+        <input type="checkbox" id="photolist" /> <br/><br/>
+        <button onclick="createSr()">Send Text</button>
+      </div>
+
+      <br/><br/>
     </div>
 
-    <br/><br/>
-
-    <div id="console"></div>
   </body>
   <script>
   function createSr() {
@@ -73,9 +88,9 @@
         //Use response to prefill fields.
       }).then(function(resp) {
         console.log(resp);
-        document.getElementById("firstname").value = resp.contactName;
-        document.getElementById("lastname").value = resp.contactName;
+        document.getElementById("fullname").value = resp.contactName;
         document.getElementById("phone").value = resp.contactPhone;
+        document.getElementById("address").value = resp.contactAddress;
 
         document.getElementById('intake-form').style.display = 'block';
       });
@@ -85,8 +100,6 @@
     gwClient.getClient().then(function(client) {
       return Promise.all([client, client.getContext()]);
     }).then(function(values) {
-      document.getElementById("console").innerHTML = JSON.stringify(values);
-
       candidates = values[1].candidates;
 
       populateServiceables(candidates);
