@@ -9,13 +9,40 @@
   </head>
   <body>
     <h3>Request Inspection Photos</h3>
-    Inspection intake form w/ applicable fields prepoplulate (and hidden).<br/><br/>Customize message, lists, etc.<br/><br/>
+    <h4>Select Serviceable</h4>
+    <select id="serviceableId" onchange="return selectServicable(this.value)">
+      <option value=""></option>
+    </select>
+    <br/>
+    <div style="display:none;" id="intake-form">
+      Inspection intake form w/ applicable fields prepoplulate (and hidden).<br/><br/>Customize message, lists, etc.<br/><br/>
+    </div>
     <button onclick="createSr()">Start Inspection</button>
     <button onclick="createPrefill()">Prefill 2.0</button>
     <button onclick="createPrefill2()">Prefill2 2.0</button>
-    <br/><br/><div id="console"></div>
+    <br/><br/>
+
+    <div id="console"></div>
   </body>
   <script>
+    function selectServicable(serviceableId) {
+      var gwClient = GW.createClient("truepic", "tpvision");
+      gwClient.getClient().then(function(client) {
+        return Promise.all([client, client.getContext()]);
+      }).then(function(values) {
+        console.log(values);
+        return values[0].httpRequest("GET", "/prefill/serviceable/" + values[1].candidates[0].id);
+
+      }).then(function(response) {
+        console.log("prefill2", response);
+        document.getElementById('intake-form').style.display = 'block';
+        return response.json();
+        //Use response to prefill fields.
+      }).then(function(resp) {
+        console.log(resp);
+      });
+    }
+
     function createSr() {
       var gwClient = GW.createClient("truepic", "tpvision");
       gwClient.getClient().then(function(client) {
@@ -76,12 +103,27 @@
       });
     }
 
-
     var gwClient = GW.createClient("truepic", "tpvision");
     gwClient.getClient().then(function(client) {
       return Promise.all([client, client.getContext()]);
     }).then(function(values) {
       document.getElementById("console").innerHTML = JSON.stringify(values);
+
+      candidates = values[1].candidates;
+
+      populateServiceables(candidates);
     })
+
+    function populateServiceables(serviceables) {
+      var x = document.getElementById("serviceableId");
+
+      for (var i = 0; i < serviceables.length; i++) {
+        serviceable = serviceables[i];
+        var option = document.createElement("option");
+        option.value = serviceable.id;
+        option.text = serviceable.displayableName;
+        x.add(option);
+      }
+    }
   </script>
 </html>
