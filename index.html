@@ -49,7 +49,7 @@
         //return values[0].httpRequest("GET", "https://cors-anywhere.herokuapp.com/https://truepic-tpvision-test.sandbox.devconnect.io/cc/devconnect/truepic/tpvision/prefill/serviceable/" + values[1].candidates[0].id);
 
       }).then(function(response) {
-        console.log("prefill");
+        console.log("prefill", response);
         return response.json();
         //Use response to prefill fields.
       }).then(function(resp) {
