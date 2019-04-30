@@ -16,10 +16,20 @@
     <br/>
     <div style="display:none;" id="intake-form">
       Inspection intake form w/ applicable fields prepoplulate (and hidden).<br/><br/>Customize message, lists, etc.<br/><br/>
+      First Name:<br/>
+      <input type="text" id="firstname" value="" /><br/><br/>
+      Last Name:<br/>
+      <input type="text" id="lastname" value="" /><br/><br/>
+      Phone Number:<br/>
+      <input type="text" id="phone" value="" /><br/><br/>
+      Address:<br/>
+      <input type="text" id="address" value="" /><br/><br/>
+
+      <button onclick="createSr()">Start Inspection</button>
+      <button onclick="createPrefill()">Prefill 2.0</button>
+      <button onclick="createPrefill2()">Prefill2 2.0</button>
     </div>
-    <button onclick="createSr()">Start Inspection</button>
-    <button onclick="createPrefill()">Prefill 2.0</button>
-    <button onclick="createPrefill2()">Prefill2 2.0</button>
+
     <br/><br/>
 
     <div id="console"></div>
@@ -35,7 +45,12 @@
 
       }).then(function(response) {
         console.log("prefill2", response);
+        document.getElementById("firstname").value = response.contactName;
+        document.getElementById("lastname").value = response.contactName;
+        document.getElementById("phone").value = response.contactPhone;
+
         document.getElementById('intake-form').style.display = 'block';
+        
         return response.json();
         //Use response to prefill fields.
       }).then(function(resp) {
@@ -43,65 +58,7 @@
       });
     }
 
-    function createSr() {
-      var gwClient = GW.createClient("truepic", "tpvision");
-      gwClient.getClient().then(function(client) {
-        return Promise.all([client, client.getContext()]);
-      }).then(function(values) {
-        //This is where you would use the Context to prefill and eventually create a service on your side
-        //We will just create a dummy SR
-        var serviceRequest = {
-          "referenceNumber": Math.floor(Math.random() * 10000),
-          "serviceableId": values[1].candidates[0].id,
-          "referenceId1": Math.floor(Math.random() * 10000)
-        }
-        console.log("My Values",JSON.stringify(values));
 
-        return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
-      }).then(function(values) {
-        values[0].completed(values[1].referenceNumber);
-      });
-    }
-
-    function createPrefill() {
-      console.log("prefill");
-
-      var gwClient = GW.createClient("truepic", "tpvision");
-      gwClient.getClient().then(function(client) {
-        return Promise.all([client, client.getContext()]);
-      }).then(function(values) {
-        console.log(values);
-        //return values[0].httpRequest("GET", "/prefill/serviceable/" + values[1].candidates[0].id);
-        return values[0].httpRequest("GET", "/helloworld/" + values[1].candidates[0].id);
-        //return values[0].httpRequest("GET", "https://cors-anywhere.herokuapp.com/https://truepic-tpvision-test.sandbox.devconnect.io/cc/devconnect/truepic/tpvision/prefill/serviceable/" + values[1].candidates[0].id);
-
-      }).then(function(response) {
-        console.log("prefill", response);
-        return response.json();
-        //Use response to prefill fields.
-      }).then(function(resp) {
-        console.log(resp);
-      });
-    }
-
-    function createPrefill2() {
-      console.log("prefill2");
-
-      var gwClient = GW.createClient("truepic", "tpvision");
-      gwClient.getClient().then(function(client) {
-        return Promise.all([client, client.getContext()]);
-      }).then(function(values) {
-        console.log(values);
-        return values[0].httpRequest("GET", "/prefill/serviceable/" + values[1].candidates[0].id);
-
-      }).then(function(response) {
-        console.log("prefill2", response);
-        return response.json();
-        //Use response to prefill fields.
-      }).then(function(resp) {
-        console.log(resp);
-      });
-    }
 
     var gwClient = GW.createClient("truepic", "tpvision");
     gwClient.getClient().then(function(client) {
