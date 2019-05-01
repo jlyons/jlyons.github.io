@@ -6,14 +6,22 @@
     <style>
     body {font-family: Arial, Helvetica, sans-serif;color:#202529;}
     .shell {margin:20px;max-width:600px;}
-    .container1 {padding:20px;background-color:#dedede;}
+    .container1 {padding:20px;background-color:#ced8dc;border-radius: 5px;}
     .container1 select {height:25px;}
-    .container2 {padding:20px;background-color:#dae1e7;margin-top:40px;}
+    .container2 {padding:20px;background-color:#eeeeee;border-radius: 5px;margin-top:40px;}
     #console {padding: 20px; background-color: #efefef; font-family: monospace;}
+    .field {margin-bottom:20px;}
     .label {float:left;width:150px;height:20px;padding-top:7px;}
-    button {border-radius: .75rem;background-color: #0075ff;height:48px;padding:0 2.5rem;color:#fff;font-size:.75rem;text-transform:uppercase}
-    input[type='text'] {height:20px;width:300px;padding:3px;}
+    button {border-radius: .75rem;background-color: #1f67ac;height:48px;padding:0 2.5rem;color:#fff;font-size:.75rem;text-transform:uppercase}
+    textarea, input, select {font-size:14px;border: 1px solid #C0C0C0;border-radius: 4px;}
+    input[type='text'] {height:20px;width:300px;padding:3px 6px;}
     input[type='checkbox'] {height:25px;}
+    textarea {width:300px;height:400px;padding:10px;}
+
+    #photolist-container input {width:200px;}
+    #photolist-container a {margin-left:20px;}
+    #photolist-container button {margin-top:20px;height:32px;padding:0 1rem;}
+    #photolist-container .item {margin-bottom:10px;}
     </style>
   </head>
   <body>
@@ -31,17 +39,50 @@
       </div>
 
       <!-- Change to display:none/block; -->
-      <div class="container2" style="display:block;" id="intake-form">
-        <div class="label">Full name:</div>
-        <input type="text" id="fullname" value="" /><br/><br/>
-        <div class="label">Phone Number:</div>
-        <input type="text" id="phone" value="" /><br/><br/>
-        <div class="label">Address:</div>
-        <input type="text" id="address" value="" /><br/><br/>
-        <div class="label">Customer ID:</div>
-        <input type="text" id="address" value="" /><br/><br/>
-        <div class="label">Include Photo List:</div>
-        <input type="checkbox" id="photolist" /> <br/><br/>
+      <div class="container2" style="display:none;" id="intake-form">
+        <div class="field">
+          <div class="label">Full name:</div>
+          <input type="text" id="fullname" value="" />
+        </div>
+        <div class="field">
+          <div class="label">Phone Number:</div>
+          <input type="text" id="phone" value="" />
+        </div>
+        <div class="field">
+          <div class="label">Address:</div>
+          <input type="text" id="address" value="" />
+        </div>
+        <div class="field">
+          <div class="label">Customer ID:</div>
+          <input type="text" id="customerId" value="" />
+        </div>
+        <div class="field">
+          <div class="label">Include Photo List:</div>
+          <div style="width:410px;float:left;">
+            <input type="checkbox" id="photolist" onchange="togglePhotoList(this.checked);" />
+            <div id="photolist-container" style="display:none;">
+              <div id="items">
+                <div class="item">
+                  <input type="text" /> <a href="javascript:;" onclick="deleteListItem(this)">remove</a>
+                </div>
+              </div>
+              <div><button onclick="addListItem();">Add Item</button></div>
+            </div>
+          </div>
+          <div style="clear:both;"></div>
+        </div>
+        <div class="field">
+          <div class="label">Text Message:</div>
+          <textarea name="message">Hi [NAME], this is Jason from the TP Vision team. Please use the link below to submit photo documentation for your insurance inspection.  For your reference, your Customer ID is #[CUSTOMER ID].
+
+Please click on the following link to download our photo documentation app:
+
+https://vision.app.link/sample
+
+This link will expire in 5 days. Once the app is downloaded, please follow the onscreen instructions to upload your photos.
+
+Thank you, and please call us at (800) 867-5309 with any questions.</textarea>
+        </div>
         <button onclick="createSr()">Send Text</button>
       </div>
 
@@ -92,6 +133,7 @@
         document.getElementById("fullname").value = resp.contactName;
         document.getElementById("phone").value = resp.contactPhone;
         document.getElementById("address").value = resp.contactAddress;
+        document.getElementById("customerId").value = resp.claimNumber;
 
         document.getElementById('intake-form').style.display = 'block';
       });
@@ -116,6 +158,33 @@
         option.text = serviceable.type + " - " + serviceable.displayableName;
         x.add(option);
       }
+    }
+
+    function addListItem() {
+      var x = document.getElementById("items");
+
+      var item = `<div class="item">
+        <input type="text" /> <a href="javascript:;" onclick="deleteListItem(this)">remove</a>
+      </div>`;
+
+      var newNode = document.createElement('div');
+      newNode.innerHTML = item;
+
+      x.appendChild(newNode);
+    }
+
+    function deleteListItem(item) {
+      item.parentNode.parentNode.removeChild(item.parentNode);
+    }
+
+    function togglePhotoList(checked) {
+      var x = document.getElementById("photolist-container");
+
+      if (checked)
+        x.style.display = 'block';
+      else
+        x.style.display = 'none';
+
     }
   </script>
 </html>
