@@ -22,6 +22,8 @@
     #photolist-container a {margin-left:20px;}
     #photolist-container button {margin-top:20px;height:32px;padding:0 1rem;}
     #photolist-container .item {margin-bottom:10px;}
+    #photolist-container .delItem {text-decoration:none;color:#8795a1;text-transform: uppercase;font-size: 10px;}
+    #photolist-container .delItem:hover {color:#e3342f}
     </style>
   </head>
   <body>
@@ -39,7 +41,7 @@
       </div>
 
       <!-- Change to display:none/block; -->
-      <div class="container2" style="display:none;" id="intake-form">
+      <div class="container2" style="display:block;" id="intake-form">
         <div class="field">
           <div class="label">Full name:</div>
           <input type="text" id="fullname" value="" />
@@ -63,7 +65,7 @@
             <div id="photolist-container" style="display:none;">
               <div id="items">
                 <div class="item">
-                  <input type="text" /> <a href="javascript:;" onclick="deleteListItem(this)">remove</a>
+                  <input type="text" placeholder="Enter Item" /> <a href="javascript:;" class="delItem" onclick="deleteListItem(this)">remove</a>
                 </div>
               </div>
               <div><button onclick="addListItem();">Add Item</button></div>
@@ -164,7 +166,7 @@ Thank you, and please call us at (800) 867-5309 with any questions.</textarea>
       var x = document.getElementById("items");
 
       var item = `<div class="item">
-        <input type="text" /> <a href="javascript:;" onclick="deleteListItem(this)">remove</a>
+        <input type="text" placeholder="Enter Item" /> <a href="javascript:;" class="delItem" onclick="deleteListItem(this)">remove</a>
       </div>`;
 
       var newNode = document.createElement('div');
