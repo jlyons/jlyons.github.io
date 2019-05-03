@@ -16,11 +16,11 @@
     textarea, input, select {font-size:14px;border: 1px solid #C0C0C0;border-radius: 4px;}
     input[type='text'] {height:20px;width:300px;padding:3px 6px;}
     input[type='checkbox'] {height:25px;}
-    textarea {width:300px;height:400px;padding:10px;}
+    textarea {width:300px;height:100px;padding:10px;}
 
     #photolist-container input {width:200px;}
     #photolist-container a {margin-left:20px;}
-    #photolist-container button {margin-top:20px;height:32px;padding:0 1rem;}
+    #photolist-container button {height:32px;padding:0 1rem;}
     #photolist-container .item {margin-bottom:10px;}
     #photolist-container .delItem {text-decoration:none;color:#8795a1;text-transform: uppercase;font-size: 10px;}
     #photolist-container .delItem:hover {color:#e3342f}
@@ -41,10 +41,10 @@
       </div>
 
       <!-- Change to display:none/block; -->
-      <div class="container2" style="display:none;" id="intake-form">
+      <div class="container2" style="display:block;" id="intake-form">
         <div class="field">
           <div class="label">Full name:</div>
-          <input type="text" id="fullname" value="" />
+          <input type="text" id="fullname" onkeyup="populateMessage();" value="" />
         </div>
         <div class="field">
           <div class="label">Phone Number:</div>
@@ -55,8 +55,8 @@
           <input type="text" id="address" value="" />
         </div>
         <div class="field">
-          <div class="label">Customer ID:</div>
-          <input type="text" id="customerId" value="" />
+          <div class="label">Policy Number:</div>
+          <input type="text" id="customerId" onkeyup="populateMessage();" value="" />
         </div>
         <div class="field">
           <div class="label">Include Photo List:</div>
@@ -64,27 +64,18 @@
             <input type="checkbox" id="photolist" onchange="togglePhotoList(this.checked);" />
             <div id="photolist-container" style="display:none;">
               <div id="items">
-                <div class="item">
-                  <input type="text" placeholder="Enter Item" /> <a href="javascript:;" class="delItem" onclick="deleteListItem(this)">remove</a>
-                </div>
+
               </div>
-              <div><button onclick="addListItem();">Add Item</button></div>
+              <div><button onclick="addListItem('');">Add Item</button></div>
             </div>
           </div>
           <div style="clear:both;"></div>
         </div>
         <div class="field">
           <div class="label">Text Message:</div>
-          <textarea name="message">Hi [NAME], this is Jason from the TP Vision team. Please use the link below to submit photo documentation for your insurance inspection.  For your reference, your Customer ID is #[CUSTOMER ID].
+          <div style="width:300px;margin:8px 0 20px;float:left;" id="message">
 
-Please click on the following link to download our photo documentation app:
-
-https://vision.app.link/sample
-
-This link will expire in 5 days. Once the app is downloaded, please follow the onscreen instructions to upload your photos.
-
-Thank you, and please call us at (800) 867-5309 with any questions.</textarea>
-
+          </div>
 
         </div>
         <div class="field">
@@ -99,6 +90,55 @@ Thank you, and please call us at (800) 867-5309 with any questions.</textarea>
 
   </body>
   <script>
+  var defaultMessage = `Hi [NAME], this is Jason from the TP Vision team. Please use the link below to submit photo documentation for your insurance inspection.  For your reference, your Customer ID is #[CUSTOMER ID].<br/><br/>
+Please click on the following link to download our photo documentation app:<br/><br/>
+https://vision.app.link/sample<br/><br/>
+This link will expire in 5 days. Once the app is downloaded, please follow the onscreen instructions to upload your photos.<br/><br/>
+[CUSTOM MESSAGE]<br/><br/>
+Thank you, and please call us at (800) 867-5309 with any questions.`;
+
+  var defaultPhotoList = [ "Signage", "Front of Business", "Licensure", "Documentation", "Business Equipment" ];
+
+  populateMessage();
+  populateDefaultPhotoList();
+
+  function populateMessage() {
+    var x = document.getElementById("message");
+    var fullname = document.getElementById("fullname").value;
+    var customerId = document.getElementById("customerId").value;
+    var customMessage = document.getElementById("customMessage") ? document.getElementById("customMessage").value : "";
+
+    var message = defaultMessage;
+
+    if (fullname !== '')
+      message = message.replace("[NAME]", fullname);
+
+    if (customerId !== '')
+      message = message.replace("[CUSTOMER ID]", customerId);
+
+    if (customMessage)
+      message = message.replace("[CUSTOM MESSAGE]", getCustomMessageTextarea(customMessage));
+    else
+      message = message.replace("[CUSTOM MESSAGE]", getCustomMessageTextarea(''));
+
+    x.innerHTML = message;
+  }
+
+  function populateDefaultPhotoList() {
+    if (defaultPhotoList.length)
+      defaultPhotoList.forEach(function(item) {
+        addListItem(item);
+      });
+    else
+      addListItem('');
+  }
+
+  function getCustomMessageTextarea(value) {
+    var html = `<textarea name="custom_message" id="customMessage" placeholder="Enter custom message (optional)">[VALUE]</textarea>`;
+
+    return html.replace("[VALUE]",value);
+  }
+
   function createSr() {
     var gwClient = GW.createClient("truepic", "tpvision");
     gwClient.getClient().then(function(client) {
@@ -144,6 +184,7 @@ Thank you, and please call us at (800) 867-5309 with any questions.</textarea>
         document.getElementById("customerId").value = resp.claimNumber;
 
         document.getElementById('intake-form').style.display = 'block';
+        populateMessage();
       });
     }
 
@@ -168,11 +209,11 @@ Thank you, and please call us at (800) 867-5309 with any questions.</textarea>
       }
     }
 
-    function addListItem() {
+    function addListItem(val) {
       var x = document.getElementById("items");
 
       var item = `<div class="item">
-        <input type="text" placeholder="Enter Item" /> <a href="javascript:;" class="delItem" onclick="deleteListItem(this)">remove</a>
+        <input type="text" placeholder="Enter Item" value="` + val + `" /> <a href="javascript:;" class="delItem" onclick="deleteListItem(this)">remove</a>
       </div>`;
 
       var newNode = document.createElement('div');
@@ -192,7 +233,6 @@ Thank you, and please call us at (800) 867-5309 with any questions.</textarea>
         x.style.display = 'block';
       else
         x.style.display = 'none';
-
     }
   </script>
 </html>
