@@ -12,6 +12,7 @@
     #console {padding: 20px; background-color: #efefef; font-family: monospace;}
     .field {margin-bottom:20px;}
     .label {float:left;width:150px;height:20px;padding-top:7px;}
+    .label span {font-size:12px;}
     button {border-radius: .75rem;background-color: #1f67ac;height:48px;padding:0 2.5rem;color:#fff;font-size:.75rem;text-transform:uppercase}
     textarea, input, select {font-size:14px;border: 1px solid #C0C0C0;border-radius: 4px;}
     input[type='text'] {height:20px;width:300px;padding:3px 6px;}
@@ -41,7 +42,7 @@
       </div>
 
       <!-- Change to display:none/block; -->
-      <div class="container2" style="display:block;" id="intake-form">
+      <div class="container2" style="display:none;" id="intake-form">
         <div class="field">
           <div class="label">Full name:</div>
           <input type="text" id="fullname" onkeyup="populateMessage();" value="" />
@@ -51,7 +52,7 @@
           <input type="text" id="phone" value="" />
         </div>
         <div class="field">
-          <div class="label">Address:</div>
+          <div class="label">Address:<br/><span>(optional)<span></div>
           <input type="text" id="address" value="" />
         </div>
         <div class="field">
