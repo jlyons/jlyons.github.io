@@ -164,9 +164,10 @@ Thank you, and please call us at (800) 867-5309 with any questions.`;
     function selectServicable(serviceableId) {
       var gwClient = GW.createClient("truepic", "tpvision");
       gwClient.getClient().then(function(client) {
+        console.log("client", client);
         return Promise.all([client, client.getContext()]);
       }).then(function(values) {
-        console.log(values);
+        console.log("values", values);
         var serviceableId = document.getElementById("serviceableId").value;
 
         return values[0].httpRequest("GET", "/prefill/serviceable/" + serviceableId);
