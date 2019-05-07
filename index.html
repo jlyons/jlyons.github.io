@@ -42,7 +42,7 @@
       </div>
 
       <!-- Change to display:none/block; -->
-      <div class="container2" style="display:block;" id="intake-form">
+      <div class="container2" style="display:none;" id="intake-form">
         <div class="field">
           <div class="label">Full name:</div>
           <input type="text" id="fullname" onkeyup="populateMessage();" value="" />
@@ -91,12 +91,12 @@
 
   </body>
   <script>
-  var defaultMessage = `Hi [NAME], this is Jason from the TP Vision team. Please use the link below to submit photo documentation for your insurance inspection.  For your reference, your Customer ID is #[CUSTOMER ID].<br/><br/>
-Please click on the following link to download our photo documentation app:<br/><br/>
-https://vision.app.link/sample<br/><br/>
-This link will expire in 5 days. Once the app is downloaded, please follow the onscreen instructions to upload your photos.<br/><br/>
-[CUSTOM MESSAGE]<br/><br/>
-Thank you, and please call us at (800) 867-5309 with any questions.`;
+  var defaultMessage = "Hi [NAME], this is Jason from the TP Vision team. Please use the link below to submit photo documentation for your insurance inspection.  For your reference, your Customer ID is #[CUSTOMER ID].<br/><br/> \
+Please click on the following link to download our photo documentation app:<br/><br/> \
+https://vision.app.link/sample<br/><br/> \
+This link will expire in 5 days. Once the app is downloaded, please follow the onscreen instructions to upload your photos.<br/><br/> \
+[CUSTOM MESSAGE]<br/><br/> \
+Thank you, and please call us at (800) 867-5309 with any questions.";
 
   var defaultPhotoList = [ "Signage", "Front of Business", "Licensure", "Documentation", "Business Equipment" ];
 
@@ -135,7 +135,7 @@ Thank you, and please call us at (800) 867-5309 with any questions.`;
   }
 
   function getCustomMessageTextarea(value) {
-    var html = `<textarea name="custom_message" id="customMessage" placeholder="Enter custom message (optional)">[VALUE]</textarea>`;
+    var html = '<textarea name="custom_message" id="customMessage" placeholder="Enter custom message (optional)">[VALUE]</textarea>';
 
     return html.replace("[VALUE]",value);
   }
@@ -214,9 +214,9 @@ Thank you, and please call us at (800) 867-5309 with any questions.`;
     function addListItem(val) {
       var x = document.getElementById("items");
 
-      var item = `<div class="item">
-        <input type="text" placeholder="Enter Item" value="` + val + `" /> <a href="javascript:;" class="delItem" onclick="deleteListItem(this)">remove</a>
-      </div>`;
+      var item = '<div class="item"> \
+        <input type="text" placeholder="Enter Item" value="` + val + `" /> <a href="javascript:;" class="delItem" onclick="deleteListItem(this)">remove</a> \
+      </div>';
 
       var newNode = document.createElement('div');
       newNode.innerHTML = item;
