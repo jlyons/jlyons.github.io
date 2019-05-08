@@ -17,7 +17,10 @@
     textarea, input, select {font-size:14px;border: 1px solid #C0C0C0;border-radius: 4px;}
     input[type='text'] {height:20px;width:300px;padding:3px 6px;}
     input[type='checkbox'] {height:25px;}
+    input.required {border-bottom: 4px solid #d8394b}
     textarea {width:300px;height:100px;padding:10px;}
+    .error {margin-left:150px;margin-top:10px;font-size:14px;color:#d8394b;display:none;}
+    .show {display:block;}
 
     #photolist-container input {width:200px;}
     #photolist-container a {margin-left:20px;}
@@ -42,14 +45,16 @@
       </div>
 
       <!-- Change to display:none/block; -->
-      <div class="container2" style="display:none;" id="intake-form">
+      <div class="container2" style="display:block;" id="intake-form">
         <div class="field">
           <div class="label">Full name:</div>
           <input type="text" id="fullname" onkeyup="populateMessage();" value="" />
+          <div class="error" id="fullnameError">This field is required</div>
         </div>
         <div class="field">
           <div class="label">Phone Number:</div>
           <input type="text" id="phone" value="" />
+          <div class="error" id="phoneError">This field is required</div>
         </div>
         <div class="field">
           <div class="label">Address:<br/><span>(optional)<span></div>
@@ -58,6 +63,7 @@
         <div class="field">
           <div class="label">Policy Number:</div>
           <input type="text" id="customerId" onkeyup="populateMessage();" value="" />
+          <div class="error" id="customerIdError">This field is required</div>
         </div>
         <div class="field">
           <div class="label">Include Photo List:</div>
@@ -140,25 +146,58 @@ Thank you, and please call us at (800) 867-5309 with any questions.";
     return html.replace("[VALUE]",value);
   }
 
-  function createSr() {
-    var gwClient = GW.createClient("truepic", "tpvision");
-    gwClient.getClient().then(function(client) {
-      return Promise.all([client, client.getContext()]);
-    }).then(function(values) {
-      //This is where you would use the Context to prefill and eventually create a service on your side
-      //We will just create a dummy SR
-      var serviceableId = document.getElementById("serviceableId").value;
+  function validate() {
 
-      var serviceRequest = {
-        "referenceNumber": Math.floor(Math.random() * 10000),
-        "serviceableId": serviceableId,
-        "referenceId1": Math.floor(Math.random() * 10000)
-      }
-      console.log("My Values",JSON.stringify(values));
-      return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
-    }).then(function(values) {
-      values[0].completed(values[1].referenceNumber);
-    });
+    var fullname = document.getElementById("fullname");
+    var customerId = document.getElementById("customerId");
+    var phone = document.getElementById("phone");
+
+    if (fullname.value == '') {
+      fullname.classList.add("required");
+      document.getElementById("fullnameError").classList.add("show");
+    } else {
+      fullname.classList.remove("required");
+      document.getElementById("fullnameError").classList.remove("show");
+    }
+
+    if (customerId.value == '') {
+      customerId.classList.add("required");
+      document.getElementById("customerIdError").classList.add("show");
+    } else {
+      customerId.classList.remove("required");
+      document.getElementById("customerIdError").classList.remove("show");
+    }
+
+    if (phone.value == '') {
+      phone.classList.add("required");
+      document.getElementById("phoneError").classList.add("show");
+    } else {
+      phone.classList.remove("required");
+      document.getElementById("phoneError").classList.remove("show");
+    }
+  }
+
+  function createSr() {
+    if (validate()) {
+      var gwClient = GW.createClient("truepic", "tpvision");
+      gwClient.getClient().then(function(client) {
+        return Promise.all([client, client.getContext()]);
+      }).then(function(values) {
+        //This is where you would use the Context to prefill and eventually create a service on your side
+        //We will just create a dummy SR
+        var serviceableId = document.getElementById("serviceableId").value;
+
+        var serviceRequest = {
+          "referenceNumber": Math.floor(Math.random() * 10000),
+          "serviceableId": serviceableId,
+          "referenceId1": Math.floor(Math.random() * 10000)
+        }
+        console.log("My Values",JSON.stringify(values));
+        return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
+      }).then(function(values) {
+        values[0].completed(values[1].referenceNumber);
+      });
+    }
   }
 
     function selectServicable(serviceableId) {
