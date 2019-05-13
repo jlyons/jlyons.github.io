@@ -201,7 +201,8 @@ Thank you, and please call us at (800) 867-5309 with any questions.";
         console.log("My Values",JSON.stringify(values));
         return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
       }).then(function(values) {
-        values[0].completed(values[1].referenceNumber);
+        //values[0].completed(values[1].referenceNumber);
+        values[0].navigate("servicerequest", values[1].referenceNumber);
       });
     }
   }
