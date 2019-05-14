@@ -216,7 +216,7 @@ Thank you, and please call us at (800) 867-5309 with any questions.";
         console.log("values", values);
         var serviceableId = document.getElementById("serviceableId").value;
 
-        return values[0].httpRequest("GET", "/prefill/serviceable/" + serviceableId);
+        return values[0].httpRequest("GET", "/v1/api/prefill/serviceable/" + serviceableId);
 
       }).then(function(response) {
         console.log("prefill2", response);
