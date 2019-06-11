@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html>
-<!-- This example HTML file is loaded by the Sample Addon to show simple SR creation. -->
 
 <head>
   <script src="https://s3-us-west-2.amazonaws.com/dc-sampleaddon-ui/gwsdk-1.0.9.js"></script>
-  <link rel = "stylesheet" type = "text/css" href = "./style.css" />
-  
-  
+  <script src="./addon.js"></script>
+  <link rel="stylesheet" type="text/css" href="./style.css" />
 </head>
-
-<body>
+ 
+<body onload="init();">
   <div class="shell">
     <h3>Request New Inspection Photos</h3>
     <p>Confirm customer details and then click Send Text to request photos.</p>
     <div class="container1">
-      <div class="label" style="width:100px;">Related To</div>
+      <div class="label">Related To</div>
       <div>
         <select id="serviceableId" style="width:460px;" onchange="return selectServicable(this.value)">
-          <!-- <option value="">2003 BMW 355i (2GDH967 / California)</option> -->
           <option value="">-- Select Serviceable --</option>
-        </select>
+        </select> 
       </div>
     </div>
 
-    <!-- Change to display:none/block; -->
     <div class="container2" style="display:none;" id="intake-form">
       <div class="field">
         <div class="label">Full name:</div>
@@ -59,21 +55,14 @@
       </div>
       <div class="field">
         <div class="label">Text Message:</div>
-        <div style="width:300px;margin:8px 0 20px;float:left;" id="message">
-
-        </div>
-
+        <div id="message"></div>
       </div>
       <div class="field">
         <div class="label"></div>
-        <button onclick="createSr()">Send Text</button>
+        <button onclick="createServiceRequest()">Send Text</button>
       </div>
-
     </div>
-
-    <br /><br />
   </div>
-
 </body>
-<script src="./addon.js"></script>
+
 </html>

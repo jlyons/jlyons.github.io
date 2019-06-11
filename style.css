@@ -1,52 +1,54 @@
   body {
       font-family: Arial, Helvetica, sans-serif;
       color: #202529;
-    }
+  }
 
-    .shell {
+  .shell {
       margin: 20px;
       max-width: 600px;
-    }
+  }
 
-    .container1 {
+  .container1 {
       padding: 20px;
       background-color: #ced8dc;
       border-radius: 5px;
-    }
+  }
 
-    .container1 select {
+  .container1 .label {width:100px;}
+
+  .container1 select {
       height: 25px;
-    }
+  }
 
-    .container2 {
+  .container2 {
       padding: 20px;
       background-color: #eeeeee;
       border-radius: 5px;
       margin-top: 40px;
-    }
+  }
 
-    #console {
+  #console {
       padding: 20px;
       background-color: #efefef;
       font-family: monospace;
-    }
+  }
 
-    .field {
+  .field {
       margin-bottom: 20px;
-    }
+  }
 
-    .label {
+  .label {
       float: left;
       width: 150px;
       height: 20px;
       padding-top: 7px;
-    }
+  }
 
-    .label span {
+  .label span {
       font-size: 12px;
-    }
+  }
 
-    button {
+  button {
       border-radius: .75rem;
       background-color: #1f67ac;
       height: 48px;
@@ -54,73 +56,76 @@
       color: #fff;
       font-size: .75rem;
       text-transform: uppercase
-    }
+  }
 
-    textarea,
-    input,
-    select {
+  textarea, input, select {
       font-size: 14px;
       border: 1px solid #C0C0C0;
       border-radius: 4px;
-    }
+  }
 
-    input[type='text'] {
+  input[type='text'] {
       height: 20px;
       width: 300px;
       padding: 3px 6px;
-    }
+  }
 
-    input[type='checkbox'] {
+  input[type='checkbox'] {
       height: 25px;
-    }
+  }
 
-    input.required {
+  input.required {
       border-bottom: 4px solid #d8394b
-    }
+  }
 
-    textarea {
+  textarea {
       width: 300px;
       height: 100px;
       padding: 10px;
-    }
+  }
 
-    .error {
+  .error {
       margin-left: 150px;
       margin-top: 10px;
       font-size: 14px;
       color: #d8394b;
       display: none;
-    }
+  }
 
-    .show {
+  .show {
       display: block;
-    }
+  }
 
-    #photolist-container input {
+  #photolist-container input {
       width: 200px;
-    }
+  }
 
-    #photolist-container a {
+  #photolist-container a {
       margin-left: 20px;
-    }
+  }
 
-    #photolist-container button {
+  #photolist-container button {
       height: 32px;
       padding: 0 1rem;
-    }
+  }
 
-    #photolist-container .item {
+  #photolist-container .item {
       margin-bottom: 10px;
-    }
+  }
 
-    #photolist-container .delItem {
+  #photolist-container .delItem {
       text-decoration: none;
       color: #8795a1;
       text-transform: uppercase;
       font-size: 10px;
-    }
+  }
 
-    #photolist-container .delItem:hover {
+  #photolist-container .delItem:hover {
       color: #e3342f
-    }
-  
+  }
+
+  #message {
+      width: 300px;
+      margin: 8px 0 20px;
+      float: left;
+  }
