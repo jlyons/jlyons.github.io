@@ -14,7 +14,9 @@
       border-radius: 5px;
   }
 
-  .container1 .label {width:100px;}
+  .container1 .label {
+      width: 100px;
+  }
 
   .container1 select {
       height: 25px;

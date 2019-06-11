@@ -92,8 +92,6 @@ function createSr() {
     gwClient.getClient().then(function (client) {
       return Promise.all([client, client.getContext()]);
     }).then(function (values) {
-      //This is where you would use the Context to prefill and eventually create a service on your side
-      //We will just create a dummy SR
       var serviceableId = document.getElementById("serviceableId").value;
 
       var serviceRequest = {
@@ -101,10 +99,8 @@ function createSr() {
         "serviceableId": serviceableId,
         "referenceId1": Math.floor(Math.random() * 10000)
       }
-      console.log("My Values", JSON.stringify(values));
       return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
     }).then(function (values) {
-      //values[0].completed(values[1].referenceNumber);
       values[0].navigate("servicerequest", values[1].referenceNumber);
     });
   }
@@ -113,22 +109,13 @@ function createSr() {
 function selectServicable(serviceableId) {
   var gwClient = GW.createClient("truepic", "tpvision");
   gwClient.getClient().then(function (client) {
-    console.log("client", client);
     return Promise.all([client, client.getContext()]);
   }).then(function (values) {
-    console.log("values", values);
     var serviceableId = document.getElementById("serviceableId").value;
-
     return values[0].httpRequest("GET", "/v1/api/prefill/serviceable/" + serviceableId);
-
   }).then(function (response) {
-    console.log("prefill2", response);
-
-
     return response.json();
-    //Use response to prefill fields.
   }).then(function (resp) {
-    console.log(resp);
     document.getElementById("fullname").value = resp.contactName;
     document.getElementById("phone").value = resp.contactPhone;
     document.getElementById("address").value = resp.contactAddress;
