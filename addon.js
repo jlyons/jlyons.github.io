@@ -174,11 +174,6 @@ function togglePhotoList(checked) {
 }
 
 function createServiceRequest() {
-
-  
-
-
-
   if (validate()) {
     const Http = new XMLHttpRequest();
     const url = 'https://vision-staging-api.truepic.com/v2/accounts/vision-staging/events';
@@ -203,9 +198,9 @@ function createServiceRequest() {
     Http.onreadystatechange = (e) => {
       response = JSON.parse(Http.responseText)
       const eventId = response.id
-      
+      console.log("w/ return", eventId)
       var gwClient = GW.createClient("truepic", "tpvision");
-      gwClient.getClient().then(function (client) {
+      return gwClient.getClient().then(function (client) {
         return Promise.all([client, client.getContext()]);
       }).then(function (values) {
         var serviceableId = document.getElementById("serviceableId").value;
@@ -219,7 +214,6 @@ function createServiceRequest() {
       }).then(function (values) {
         values[0].navigate("servicerequest", values[1].referenceNumber);
       });
-
     }
   }
 }
