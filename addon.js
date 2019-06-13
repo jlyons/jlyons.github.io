@@ -198,7 +198,7 @@ function createServiceRequest() {
     Http.onreadystatechange = (e) => {
       response = JSON.parse(Http.responseText)
       const eventId = response.id
-      console.log("w/ return", eventId)
+      console.log("w/ return 2", eventId)
       var gwClient = GW.createClient("truepic", "tpvision");
       return gwClient.getClient().then(function (client) {
         return Promise.all([client, client.getContext()]);
@@ -212,6 +212,7 @@ function createServiceRequest() {
         }
         return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
       }).then(function (values) {
+        console.log("servicerequestion navigate", values[1].referenceNumber)
         values[0].navigate("servicerequest", values[1].referenceNumber);
       });
     }
