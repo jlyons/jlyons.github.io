@@ -6,9 +6,16 @@
   <script src="./addon.js"></script>
   <link rel="stylesheet" type="text/css" href="./style.css" />
 </head>
- 
+
 <body onload="init();">
   <div class="shell">
+    <div class="container2" style="display:block;" id="intake-form">
+      <div class="field" style="margin-bottom:0;">
+        <div class="label">Token:</div>
+        <input type="text" id="token" />
+      </div>
+    </div>
+
     <h3>Request New Inspection Photos</h3>
     <p>Confirm customer details and then click Send Text to request photos.</p>
     <div class="container1">
@@ -16,11 +23,12 @@
       <div>
         <select id="serviceableId" style="width:460px;" onchange="return selectServicable(this.value)">
           <option value="">-- Select Serviceable --</option>
-        </select> 
+        </select>
       </div>
     </div>
 
-    <div class="container2" style="display:none;" id="intake-form">
+    <!-- change display:block to display:none -->
+    <div class="container2" style="display:block;" id="intake-form">
       <div class="field">
         <div class="label">Full name:</div>
         <input type="text" id="fullname" onkeyup="populateMessage();" value="" />
@@ -59,7 +67,7 @@
       </div>
       <div class="field">
         <div class="label"></div>
-        <button onclick="createSr()">Send Text</button>
+        <button onclick="createServiceRequest()">Send Text</button>
       </div>
     </div>
   </div>

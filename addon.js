@@ -174,12 +174,52 @@ function togglePhotoList(checked) {
 }
 
 function createServiceRequest() {
-  const Http = new XMLHttpRequest();
-  const url = 'https://jsonplaceholder.typicode.com/posts';
-  Http.open("GET", url);
-  Http.send();
 
-  Http.onreadystatechange = (e) => {
-    console.log(Http.responseText)
+  
+
+
+
+  if (validate()) {
+    const Http = new XMLHttpRequest();
+    const url = 'https://vision-staging-api.truepic.com/v2/accounts/vision-staging/events';
+    const req_body = {
+      phone_number: document.getElementById("phone").value,
+      customer_setup_id: 26,
+      consumer_first_name: document.getElementById("fullname").value,
+      consumer_last_name: document.getElementById("fullname").value,
+      consumer_id: document.getElementById("customerId").value,
+      consumer_address: document.getElementById("address").value,
+    }
+    const token = document.getElementById("token").value;
+
+    console.log("req_body", req_body);
+
+    Http.open("POST", url);
+    Http.setRequestHeader('Authorization', 'Bearer ' + token);
+    Http.setRequestHeader('Content-Type', 'application/json');
+    Http.setRequestHeader('Accept', '*/*');
+    Http.send(JSON.stringify(req_body));
+
+    Http.onreadystatechange = (e) => {
+      response = JSON.parse(Http.responseText)
+      const eventId = response.id
+      
+      var gwClient = GW.createClient("truepic", "tpvision");
+      gwClient.getClient().then(function (client) {
+        return Promise.all([client, client.getContext()]);
+      }).then(function (values) {
+        var serviceableId = document.getElementById("serviceableId").value;
+
+        var serviceRequest = {
+          "referenceNumber": eventId,
+          "serviceableId": serviceableId,
+          "referenceId1": eventId
+        }
+        return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
+      }).then(function (values) {
+        values[0].navigate("servicerequest", values[1].referenceNumber);
+      });
+
+    }
   }
 }
