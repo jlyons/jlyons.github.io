@@ -245,8 +245,7 @@ function createServiceRequest() {
           ]);
         })
         .then(function(values) {
-          //values[0].navigate("servicerequest", values[1].referenceNumber);
-          values[0].navigate("https://google.com", values[1].referenceNumber);
+          values[0].navigate("servicerequest", values[1].referenceNumber);
         });
     };
   }
