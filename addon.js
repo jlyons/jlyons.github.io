@@ -1,11 +1,18 @@
-var defaultMessage = "Hi [NAME], this is Jason from the TP Vision team. Please use the link below to submit photo documentation for your insurance inspection.  For your reference, your Customer ID is #[CUSTOMER ID].<br/><br/> \
+var defaultMessage =
+  "Hi [NAME], this is Jason from the TP Vision team. Please use the link below to submit photo documentation for your insurance inspection.  For your reference, your Customer ID is #[CUSTOMER ID].<br/><br/> \
 Please click on the following link to download our photo documentation app:<br/><br/> \
 https://vision.app.link/sample<br/><br/> \
 This link will expire in 5 days. Once the app is downloaded, please follow the onscreen instructions to upload your photos.<br/><br/> \
 [CUSTOM MESSAGE]<br/><br/> \
 Thank you, and please call us at (800) 867-5309 with any questions.";
 
-var defaultPhotoList = ["Signage", "Front of Business", "Licensure", "Documentation", "Business Equipment"];
+var defaultPhotoList = [
+  "Signage",
+  "Front of Business",
+  "Licensure",
+  "Documentation",
+  "Business Equipment"
+];
 
 function init() {
   populateMessage();
@@ -16,35 +23,38 @@ function populateMessage() {
   var x = document.getElementById("message");
   var fullname = document.getElementById("fullname").value;
   var customerId = document.getElementById("customerId").value;
-  var customMessage = document.getElementById("customMessage") ? document.getElementById("customMessage").value : "";
+  var customMessage = document.getElementById("customMessage")
+    ? document.getElementById("customMessage").value
+    : "";
 
   var message = defaultMessage;
 
-  if (fullname !== '')
-    message = message.replace("[NAME]", fullname);
+  if (fullname !== "") message = message.replace("[NAME]", fullname);
 
-  if (customerId !== '')
-    message = message.replace("[CUSTOMER ID]", customerId);
+  if (customerId !== "") message = message.replace("[CUSTOMER ID]", customerId);
 
   if (customMessage)
-    message = message.replace("[CUSTOM MESSAGE]", getCustomMessageTextarea(customMessage));
+    message = message.replace(
+      "[CUSTOM MESSAGE]",
+      getCustomMessageTextarea(customMessage)
+    );
   else
-    message = message.replace("[CUSTOM MESSAGE]", getCustomMessageTextarea(''));
+    message = message.replace("[CUSTOM MESSAGE]", getCustomMessageTextarea(""));
 
   x.innerHTML = message;
 }
 
 function populateDefaultPhotoList() {
   if (defaultPhotoList.length)
-    defaultPhotoList.forEach(function (item) {
+    defaultPhotoList.forEach(function(item) {
       addListItem(item);
     });
-  else
-    addListItem('');
+  else addListItem("");
 }
 
 function getCustomMessageTextarea(value) {
-  var html = '<textarea name="custom_message" id="customMessage" placeholder="Enter custom message (optional)">[VALUE]</textarea>';
+  var html =
+    '<textarea name="custom_message" id="customMessage" placeholder="Enter custom message (optional)">[VALUE]</textarea>';
 
   return html.replace("[VALUE]", value);
 }
@@ -55,8 +65,7 @@ function validate() {
   var phone = document.getElementById("phone");
   var valid = true;
 
-
-  if (fullname.value == '') {
+  if (fullname.value == "") {
     fullname.classList.add("required");
     document.getElementById("fullnameError").classList.add("show");
     valid = false;
@@ -65,7 +74,7 @@ function validate() {
     document.getElementById("fullnameError").classList.remove("show");
   }
 
-  if (customerId.value == '') {
+  if (customerId.value == "") {
     customerId.classList.add("required");
     document.getElementById("customerIdError").classList.add("show");
     valid = false;
@@ -74,7 +83,7 @@ function validate() {
     document.getElementById("customerIdError").classList.remove("show");
   }
 
-  if (phone.value == '') {
+  if (phone.value == "") {
     phone.classList.add("required");
     document.getElementById("phoneError").classList.add("show");
     valid = false;
@@ -89,51 +98,69 @@ function validate() {
 function createSr() {
   if (validate()) {
     var gwClient = GW.createClient("truepic", "tpvision");
-    gwClient.getClient().then(function (client) {
-      return Promise.all([client, client.getContext()]);
-    }).then(function (values) {
-      var serviceableId = document.getElementById("serviceableId").value;
+    gwClient
+      .getClient()
+      .then(function(client) {
+        return Promise.all([client, client.getContext()]);
+      })
+      .then(function(values) {
+        var serviceableId = document.getElementById("serviceableId").value;
 
-      var serviceRequest = {
-        "referenceNumber": Math.floor(Math.random() * 10000),
-        "serviceableId": serviceableId,
-        "referenceId1": Math.floor(Math.random() * 10000)
-      }
-      return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
-    }).then(function (values) {
-      values[0].navigate("servicerequest", values[1].referenceNumber);
-    });
+        var serviceRequest = {
+          referenceNumber: Math.floor(Math.random() * 10000),
+          serviceableId: serviceableId,
+          referenceId1: Math.floor(Math.random() * 10000)
+        };
+        return Promise.all([
+          values[0],
+          values[0].invokeWithoutRefresh("createService", serviceRequest)
+        ]);
+      })
+      .then(function(values) {
+        values[0].navigate("servicerequest", values[1].referenceNumber);
+      });
   }
 }
 
 function selectServicable(serviceableId) {
   var gwClient = GW.createClient("truepic", "tpvision");
-  gwClient.getClient().then(function (client) {
-    return Promise.all([client, client.getContext()]);
-  }).then(function (values) {
-    var serviceableId = document.getElementById("serviceableId").value;
-    return values[0].httpRequest("GET", "/v1/api/prefill/serviceable/" + serviceableId);
-  }).then(function (response) {
-    return response.json();
-  }).then(function (resp) {
-    document.getElementById("fullname").value = resp.contactName;
-    document.getElementById("phone").value = resp.contactPhone;
-    document.getElementById("address").value = resp.contactAddress;
-    document.getElementById("customerId").value = resp.claimNumber;
+  gwClient
+    .getClient()
+    .then(function(client) {
+      return Promise.all([client, client.getContext()]);
+    })
+    .then(function(values) {
+      var serviceableId = document.getElementById("serviceableId").value;
+      return values[0].httpRequest(
+        "GET",
+        "/v1/api/prefill/serviceable/" + serviceableId
+      );
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(resp) {
+      document.getElementById("fullname").value = resp.contactName;
+      document.getElementById("phone").value = resp.contactPhone;
+      document.getElementById("address").value = resp.contactAddress;
+      document.getElementById("customerId").value = resp.claimNumber;
 
-    document.getElementById('intake-form').style.display = 'block';
-    populateMessage();
-  });
+      document.getElementById("intake-form").style.display = "block";
+      populateMessage();
+    });
 }
 
 var gwClient = GW.createClient("truepic", "tpvision");
-gwClient.getClient().then(function (client) {
-  return Promise.all([client, client.getContext()]);
-}).then(function (values) {
-  candidates = values[1].candidates;
+gwClient
+  .getClient()
+  .then(function(client) {
+    return Promise.all([client, client.getContext()]);
+  })
+  .then(function(values) {
+    candidates = values[1].candidates;
 
-  populateServiceables(candidates);
-})
+    populateServiceables(candidates);
+  });
 
 function populateServiceables(serviceables) {
   var x = document.getElementById("serviceableId");
@@ -150,11 +177,14 @@ function populateServiceables(serviceables) {
 function addListItem(val) {
   var x = document.getElementById("items");
 
-  var item = '<div class="item"> \
-        <input type="text" placeholder="Enter Item" value="' + val + '" /> <a href="javascript:;" class="delItem" onclick="deleteListItem(this)">remove</a> \
+  var item =
+    '<div class="item"> \
+        <input type="text" placeholder="Enter Item" value="' +
+    val +
+    '" /> <a href="javascript:;" class="delItem" onclick="deleteListItem(this)">remove</a> \
       </div>';
 
-  var newNode = document.createElement('div');
+  var newNode = document.createElement("div");
   newNode.innerHTML = item;
 
   x.appendChild(newNode);
@@ -167,54 +197,57 @@ function deleteListItem(item) {
 function togglePhotoList(checked) {
   var x = document.getElementById("photolist-container");
 
-  if (checked)
-    x.style.display = 'block';
-  else
-    x.style.display = 'none';
+  if (checked) x.style.display = "block";
+  else x.style.display = "none";
 }
 
 function createServiceRequest() {
   if (validate()) {
     const Http = new XMLHttpRequest();
-    const url = 'https://vision-staging-api.truepic.com/v2/accounts/vision-staging/events';
+    const url =
+      "https://vision-staging-api.truepic.com/v2/accounts/vision-staging/events";
     const req_body = {
       phone_number: document.getElementById("phone").value,
       customer_setup_id: 26,
       consumer_first_name: document.getElementById("fullname").value,
       consumer_last_name: document.getElementById("fullname").value,
       consumer_id: document.getElementById("customerId").value,
-      consumer_address: document.getElementById("address").value,
-    }
+      consumer_address: document.getElementById("address").value
+    };
     const token = document.getElementById("token").value;
 
-    console.log("req_body", req_body);
-
     Http.open("POST", url);
-    Http.setRequestHeader('Authorization', 'Bearer ' + token);
-    Http.setRequestHeader('Content-Type', 'application/json');
-    Http.setRequestHeader('Accept', '*/*');
+    Http.setRequestHeader("Authorization", "Bearer " + token);
+    Http.setRequestHeader("Content-Type", "application/json");
+    Http.setRequestHeader("Accept", "*/*");
     Http.send(JSON.stringify(req_body));
 
-    Http.onreadystatechange = (e) => {
-      response = JSON.parse(Http.responseText)
-      const eventId = response.id
-      console.log("w/ return 2", eventId)
+    Http.onreadystatechange = e => {
+      response = JSON.parse(Http.responseText);
+      const eventId = response.id;
       var gwClient = GW.createClient("truepic", "tpvision");
-      return gwClient.getClient().then(function (client) {
-        return Promise.all([client, client.getContext()]);
-      }).then(function (values) {
-        var serviceableId = document.getElementById("serviceableId").value;
+      return gwClient
+        .getClient()
+        .then(function(client) {
+          return Promise.all([client, client.getContext()]);
+        })
+        .then(function(values) {
+          var serviceableId = document.getElementById("serviceableId").value;
 
-        var serviceRequest = {
-          "referenceNumber": eventId,
-          "serviceableId": serviceableId,
-          "referenceId1": eventId
-        }
-        return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
-      }).then(function (values) {
-        console.log("servicerequestion navigate", values[1].referenceNumber)
-        values[0].navigate("servicerequest", values[1].referenceNumber);
-      });
-    }
+          var serviceRequest = {
+            referenceNumber: eventId,
+            serviceableId: serviceableId,
+            referenceId1: eventId
+          };
+          return Promise.all([
+            values[0],
+            values[0].invokeWithoutRefresh("createService", serviceRequest)
+          ]);
+        })
+        .then(function(values) {
+          //values[0].navigate("servicerequest", values[1].referenceNumber);
+          values[0].navigate("https://google.com", values[1].referenceNumber);
+        });
+    };
   }
 }
