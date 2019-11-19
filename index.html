@@ -2,74 +2,36 @@
 <html>
 
 <head>
-  <script src="https://s3-us-west-2.amazonaws.com/dc-sampleaddon-ui/gwsdk-1.0.9.js"></script>
-  <script src="./addon.js"></script>
   <link rel="stylesheet" type="text/css" href="./style.css" />
 </head>
 
-<body onload="init();">
+<body>
   <div class="shell">
-    <div class="container2" style="display:block;" id="intake-form">
-      <div class="field" style="margin-bottom:0;">
-        <div class="label">Token:</div>
-        <input type="text" id="token" />
-      </div>
+    <div class="campaign">
+      <div class="label">Medium</div>
+      <div class="">ppc</div>
+      <div class="label">Source</div>
+      <div class="">adwords</div>
+      <div class="label">Campaign</div>
+      <div class="">december - financial services</div>
+
+      <div class="label">Link</div>  
+      <a
+        href="https://truepic.ninja/truepic-vision/?utm_medium=ppc&utm_source=adwords&utm_campaign=december%20-%20financial%20services">https://truepic.ninja/truepic-vision/?utm_medium=ppc&utm_source=adwords&utm_campaign=december%20-%20financial%20services</a>
     </div>
 
-    <h3>Request New Inspection Photos</h3>
-    <p>Confirm customer details and then click Send Text to request photos.</p>
-    <div class="container1">
-      <div class="label">Related To</div>
-      <div>
-        <select id="serviceableId" style="width:460px;" onchange="return selectServicable(this.value)">
-          <option value="">-- Select Serviceable --</option>
-        </select>
+    <div class="campaign">
+        <div class="label">Medium</div>
+        <div class="">email</div>
+        <div class="label">Source</div>
+        <div class="">constantcontact</div>
+        <div class="label">Campaign</div>
+        <div class="">january - marijuana</div>
+  
+        <div class="label">Link</div>    
+        <a
+          href="https://truepic.ninja/truepic-vision/?utm_medium=email&utm_source=constantcontact&utm_campaign=january%20-%20marijuana">https://truepic.ninja/truepic-vision/?utm_medium=email&utm_source=constantcontact&utm_campaign=january%20-%20marijuana</a>
       </div>
-    </div>
-
-    <!-- change display:block to display:none -->
-    <div class="container2" style="display:block;" id="intake-form">
-      <div class="field">
-        <div class="label">Full name:</div>
-        <input type="text" id="fullname" onkeyup="populateMessage();" value="" />
-        <div class="error" id="fullnameError">This field is required</div>
-      </div>
-      <div class="field">
-        <div class="label">Phone Number:</div>
-        <input type="text" id="phone" value="" />
-        <div class="error" id="phoneError">This field is required</div>
-      </div>
-      <div class="field">
-        <div class="label">Address:<br /><span>(optional)<span></div>
-        <input type="text" id="address" value="" />
-      </div>
-      <div class="field">
-        <div class="label">Policy Number:</div>
-        <input type="text" id="customerId" onkeyup="populateMessage();" value="" />
-        <div class="error" id="customerIdError">This field is required</div>
-      </div>
-      <div class="field">
-        <div class="label">Include Photo List:</div>
-        <div style="width:410px;float:left;">
-          <input type="checkbox" id="photolist" onchange="togglePhotoList(this.checked);" />
-          <div id="photolist-container" style="display:none;">
-            <div id="items">
-
-            </div>
-            <div><button onclick="addListItem('');">Add Item</button></div>
-          </div>
-        </div>
-        <div style="clear:both;"></div>
-      </div>
-      <div class="field">
-        <div class="label">Text Message:</div>
-        <div id="message"></div>
-      </div>
-      <div class="field">
-        <div class="label"></div>
-        <button onclick="createServiceRequest()">Send Text</button>
-      </div>
-    </div>
   </div>
 </body>
 
